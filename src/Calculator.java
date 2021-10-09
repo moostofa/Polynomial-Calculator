@@ -4,7 +4,7 @@ import org.apache.commons.math3.analysis.polynomials.*;
 
 public class Calculator {
     final static int MAX = 100;        //max number of iterations
-    final static double TOL = 0.05;
+    final static double TOL = 0.05;    //tolerance level
     public static void main(String[] args) throws Exception {
         Scanner input = new Scanner(System.in);
         
@@ -26,7 +26,7 @@ public class Calculator {
         double[] coefficients = new double[degree + 1];
         System.out.println("Enter values for:");
         for (int i = 0; i < coefficients.length; i++) {
-            System.out.print((char)(i + 97) + ": ");                            //utilising ASCII: this will display a: , b: , c: , and so on
+            System.out.print((char)(i + 97) + ": ");                            //utilising ASCII mapping: this will display a: , b: , c: , and so on
             coefficients[coefficients.length - i - 1] = input.nextDouble();       //stored from end of array: reason below           
         }
 
@@ -43,30 +43,33 @@ public class Calculator {
 
         //check condition of f(a) and f(b) being of different signs
         if (function.value(upperBound) * function.value(lowerBound) >= 0) {
-            System.out.println("Incorrect upper and lower bounds");
+            System.out.println("No root exists within the given interval.");
             System.exit(0);
         }
         
         System.out.println("Upper bound = " + function.value(upperBound));          //function.value(double a) returns f(a)
         System.out.println("Lower bound: " + function.value(lowerBound));
 
+        //call the bisection method on the function
         bisection(function, upperBound, lowerBound);
         input.close();
     }
 
+    //parameters: polynomial function, upper bound a, lower bound b
     public static void bisection(PolynomialFunction function, double a, double b) {
         double c;
         for (int i = 0; i < MAX; i++) {
             c = (a + b)/2;
             if (function.value(c) == 0 || Math.abs((b - a)/2) < TOL) {
-                System.out.println(c + " is a root");
+                System.out.println(c + " is a root within the given interval");
                 return;
             }
-            if (function.value(a) * function.value(c) >= 0)
+            if (function.value(a) * function.value(c) >= 0) //if f(a) and f(c) are of the same sign
                 a = c;
-            else
+            else            //else if f(b) and f(c) are of the same sign instead
                 b = c;
         }
+        //maximum iteration exceeded without finding a root
         System.out.println("Method failed.");
         return;
     }
