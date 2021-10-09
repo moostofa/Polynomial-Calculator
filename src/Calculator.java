@@ -3,8 +3,9 @@ import java.util.Scanner;
 import org.apache.commons.math3.analysis.polynomials.*;
 
 public class Calculator {
-    final static int MAX = 100;        //max number of iterations
+    final static int MAX = 100;        //max number of iterations for bisection method
     final static double TOL = 0.05;    //tolerance level
+
     public static void main(String[] args) throws Exception {
         Scanner input = new Scanner(System.in);
         
@@ -19,10 +20,11 @@ public class Calculator {
         //let user choose an option from the above. Reject if option is incorrect, and re-prompt
         int degree;
         do {
-            System.out.print("Which degree polynomial function would you like to create? (chose from 0-4)");
+            System.out.print("Which degree polynomial function would you like to create? (chose from 0-4) ");
             degree = input.nextInt();
         } while (degree < 0 || degree > 4);
 
+        //an array of coefficients for the function, taken in via loop
         double[] coefficients = new double[degree + 1];
         System.out.println("Enter values for:");
         for (int i = 0; i < coefficients.length; i++) {
@@ -41,13 +43,14 @@ public class Calculator {
         System.out.print("Lower bound: ");
         double lowerBound = input.nextDouble();
 
-        //check condition of f(a) and f(b) being of different signs
+        //if f(a) * f(b) >= 0, that means both are (+) or both are (-). Reject the chosen interval and quit
         if (function.value(upperBound) * function.value(lowerBound) >= 0) {
             System.out.println("No root exists within the given interval.");
             System.exit(0);
         }
         
-        System.out.println("Upper bound = " + function.value(upperBound));          //function.value(double a) returns f(a)
+        //note: function.value(double a) returns f(a)
+        System.out.println("Upper bound = " + function.value(upperBound));          
         System.out.println("Lower bound: " + function.value(lowerBound));
 
         //call the bisection method on the function
@@ -64,6 +67,7 @@ public class Calculator {
                 System.out.println(c + " is a root within the given interval");
                 return;
             }
+            System.out.println("Iteration " + (i + 1) + ". Value of c: " + c + ". Value of f(c): " + function.value(c));
             if (function.value(a) * function.value(c) >= 0) //if f(a) and f(c) are of the same sign
                 a = c;
             else            //else if f(b) and f(c) are of the same sign instead
