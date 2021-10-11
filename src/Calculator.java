@@ -4,7 +4,7 @@ import org.apache.commons.math3.analysis.polynomials.*;
 
 public class Calculator {
     final static int MAX = 100;        //max number of iterations for bisection method
-    final static double TOL = 0.05;    //tolerance level
+    final static double TOL = 0.001;    //tolerance level
 
     public static void main(String[] args) throws Exception {
         Scanner input = new Scanner(System.in);
