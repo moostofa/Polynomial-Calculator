@@ -43,31 +43,33 @@ public class Calculator {
         System.out.print("Lower bound: ");
         double lowerBound = input.nextDouble();
 
-        //if f(a) * f(b) >= 0, that means both are (+) or both are (-). Reject the chosen interval and quit
+        //error checking: if f(a) * f(b) >= 0, that means both are (+) or both are (-). Reject the chosen interval and quit
         if (function.value(upperBound) * function.value(lowerBound) >= 0) {
             System.out.println("No root exists within the given interval.");
             System.exit(0);
         }
         
         //note: function.value(double a) returns f(a)
-        System.out.println("Upper bound = " + function.value(upperBound));          
-        System.out.println("Lower bound: " + function.value(lowerBound));
+        System.out.println("Function value at upper bound = " + function.value(upperBound));          
+        System.out.println("Function value at lower bound = " + function.value(lowerBound));
 
         //call the bisection method on the function
         bisection(function, upperBound, lowerBound);
         input.close();
     }
 
-    //parameters: polynomial function, upper bound a, lower bound b
+    //parameters: polynomial function, upper bound (a), lower bound (b)
     public static void bisection(PolynomialFunction function, double a, double b) {
-        double c;
+        double c;       //c will store the midpoint of the current interval
         for (int i = 0; i < MAX; i++) {
             c = (a + b)/2;
-            if (function.value(c) == 0 || Math.abs((b - a)/2) < TOL) {
-                System.out.println(c + " is a root within the given interval");
+            if (function.value(c) == 0 || Math.abs((a - b))/2 < TOL) {
+                System.out.println("x = " +  c + " is a root of the function within the given interval");
                 return;
             }
-            System.out.println("Iteration " + (i + 1) + ". Value of c: " + c + ". Value of f(c): " + function.value(c));
+            System.out.println("Iteration " + (i + 1) + ". Value of c: " + c);
+
+            //compare the signs of f(a), f(b) and f(c) and create a new interval
             if (function.value(a) * function.value(c) >= 0) //if f(a) and f(c) are of the same sign
                 a = c;
             else            //else if f(b) and f(c) are of the same sign instead
